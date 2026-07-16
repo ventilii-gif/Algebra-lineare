@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { MatrixInput } from "../../components/MatrixInput";
-import { inverseWithSteps, matToString, parseMatrix } from "../../lib/matrix";
+import { inverseWithSteps, parseMatrix } from "../../lib/matrix";
+import { MatrixDisplay } from "../../components/MatrixDisplay";
 import { Steps } from "../../components/Steps";
 
 export function InversaTool() {
@@ -36,10 +37,11 @@ export function InversaTool() {
       {result && (
         <>
           <div className={`result-box ${result.value === null ? "error" : ""}`}>
-            <p style={{ fontWeight: 600 }}>
-              {result.value === null ? "La matrice non è invertibile" : "A⁻¹ ="}
-            </p>
-            {result.value && <pre style={{ margin: 0, fontFamily: "inherit" }}>{matToString(result.value)}</pre>}
+            {result.value === null ? (
+              <p style={{ fontWeight: 600 }}>La matrice non è invertibile</p>
+            ) : (
+              <MatrixDisplay matrix={result.value} prefix="A^{-1} =" />
+            )}
           </div>
           <Steps steps={result.steps} />
         </>

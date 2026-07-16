@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { MatrixInput } from "../../components/MatrixInput";
-import { addMat, subMat, scalarMul, multiplyMat, transpose, parseMatrix, matToString } from "../../lib/matrix";
+import { addMat, subMat, scalarMul, multiplyMat, transpose, parseMatrix, type Mat } from "../../lib/matrix";
+import { MatrixDisplay } from "../../components/MatrixDisplay";
 import { Fraction } from "../../lib/fraction";
 
 type Op = "add" | "sub" | "mul" | "scalar" | "transpose";
@@ -16,17 +17,17 @@ export function OperazioniTool() {
   const [scalar, setScalar] = useState("2");
   const [error, setError] = useState<string | null>(null);
 
-  const result = useMemo(() => {
+  const result = useMemo<Mat | null>(() => {
     setError(null);
     try {
       const A = parseMatrix(strA);
-      if (op === "transpose") return matToString(transpose(A));
-      if (op === "scalar") return matToString(scalarMul(Fraction.parse(scalar), A));
+      if (op === "transpose") return transpose(A);
+      if (op === "scalar") return scalarMul(Fraction.parse(scalar), A);
       const B = parseMatrix(strB);
-      if (op === "add") return matToString(addMat(A, B));
-      if (op === "sub") return matToString(subMat(A, B));
-      if (op === "mul") return matToString(multiplyMat(A, B));
-      return "";
+      if (op === "add") return addMat(A, B);
+      if (op === "sub") return subMat(A, B);
+      if (op === "mul") return multiplyMat(A, B);
+      return null;
     } catch (e) {
       setError((e as Error).message);
       return null;
@@ -85,7 +86,7 @@ export function OperazioniTool() {
       {result && !error && (
         <div className="result-box">
           <p style={{ fontWeight: 600, marginBottom: "0.4rem" }}>Risultato</p>
-          <pre style={{ margin: 0, fontFamily: "inherit" }}>{result}</pre>
+          <MatrixDisplay matrix={result} />
         </div>
       )}
     </div>
