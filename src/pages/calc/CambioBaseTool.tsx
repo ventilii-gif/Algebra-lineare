@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { MatrixInput } from "../../components/MatrixInput";
 import { MatrixDisplay } from "../../components/MatrixDisplay";
 import { FramePlane2D } from "../../components/FramePlane2D";
+import { FramePlane3D } from "../../components/FramePlane3D";
 import { Steps } from "../../components/Steps";
 import { parseMatrix, determinant, inverseWithSteps, subMat, multiplyMat, type Mat } from "../../lib/matrix";
 import { Fraction } from "../../lib/fraction";
@@ -102,6 +103,19 @@ export function CambioBaseTool() {
                 jPrime={[result.B[0][1].toNumber(), result.B[1][1].toNumber()]}
                 point={[result.pCol[0][0].toNumber(), result.pCol[1][0].toNumber()]}
                 pNew={[result.pNew[0][0].toNumber(), result.pNew[1][0].toNumber()]}
+              />
+            </div>
+          )}
+
+          {dim === 3 && (
+            <div style={{ margin: "1rem 0" }}>
+              <FramePlane3D
+                oPrime={[result.oCol[0][0].toNumber(), result.oCol[1][0].toNumber(), result.oCol[2][0].toNumber()]}
+                iPrime={[result.B[0][0].toNumber(), result.B[1][0].toNumber(), result.B[2][0].toNumber()]}
+                jPrime={[result.B[0][1].toNumber(), result.B[1][1].toNumber(), result.B[2][1].toNumber()]}
+                kPrime={[result.B[0][2].toNumber(), result.B[1][2].toNumber(), result.B[2][2].toNumber()]}
+                point={[result.pCol[0][0].toNumber(), result.pCol[1][0].toNumber(), result.pCol[2][0].toNumber()]}
+                pNew={[result.pNew[0][0].toNumber(), result.pNew[1][0].toNumber(), result.pNew[2][0].toNumber()]}
               />
             </div>
           )}

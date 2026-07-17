@@ -1,5 +1,6 @@
 import { Formula } from "../../components/Formula";
 import { FramePlane2D } from "../../components/FramePlane2D";
+import { FramePlane3D } from "../../components/FramePlane3D";
 import { Link } from "react-router-dom";
 
 export function CambioBase() {
@@ -87,6 +88,19 @@ export function CambioBase() {
         <p>
           Verifica: <Formula tex="O' + 2\,\vec i\,' + 3\,\vec j\,' + 4\,\vec k\,' = (1,0,0)+(4,0,0)+(0,3,0)+(0,0,4) = (5,3,4)" />.
         </p>
+        <p style={{ color: "var(--text-muted)" }}>
+          Vista assonometrica (grigio = vecchio riferimento con assi X, Y, Z; viola = nuovo
+          riferimento; rosso = punto P e la sua decomposizione). Usa la barra per ruotare:
+        </p>
+        <FramePlane3D
+          oPrime={[1, 0, 0]}
+          iPrime={[2, 0, 0]}
+          jPrime={[0, 1, 0]}
+          kPrime={[0, 0, 1]}
+          point={[5, 3, 4]}
+          pNew={[2, 3, 4]}
+          range={6}
+        />
       </div>
 
       <div className="card">
