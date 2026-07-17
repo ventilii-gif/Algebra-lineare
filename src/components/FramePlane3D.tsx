@@ -33,14 +33,27 @@ export function FramePlane3D({
   kPrime,
   point,
   pNew,
-  range = 5,
+  range,
   size = 400,
 }: Props) {
   const [azimuth, setAzimuth] = useState(20);
 
-  const scale = size / (2.4 * range);
+  // Range calcolato per contenere tutti gli elementi, se non fornito.
+  const keyPoints: Vec3[] = [
+    [0, 0, 0],
+    oPrime,
+    [oPrime[0] + iPrime[0], oPrime[1] + iPrime[1], oPrime[2] + iPrime[2]],
+    [oPrime[0] + jPrime[0], oPrime[1] + jPrime[1], oPrime[2] + jPrime[2]],
+    [oPrime[0] + kPrime[0], oPrime[1] + kPrime[1], oPrime[2] + kPrime[2]],
+    point,
+  ];
+  const R =
+    range ??
+    Math.max(3, Math.ceil(Math.max(...keyPoints.flatMap((p) => p.map(Math.abs)))) + 2);
+
+  const scale = size / (2.4 * R);
   const cx = size / 2;
-  const cy = size / 2 + range * scale * 0.35;
+  const cy = size / 2 + R * scale * 0.35;
 
   const a = (azimuth * Math.PI) / 180;
   const ca = Math.cos(a);
@@ -57,17 +70,18 @@ export function FramePlane3D({
 
   const add = (p: Vec3, q: Vec3, s = 1): Vec3 => [p[0] + q[0] * s, p[1] + q[1] * s, p[2] + q[2] * s];
 
-  // griglia sul piano z = 0
+  // griglia sul piano z = 0 (passo più rado se l'area è grande)
+  const step = R <= 12 ? 1 : Math.ceil(R / 10);
   const gridLines: [number, number][][] = [];
-  for (let t = -range; t <= range; t++) {
-    gridLines.push([project([t, -range, 0]), project([t, range, 0])]);
-    gridLines.push([project([-range, t, 0]), project([range, t, 0])]);
+  for (let t = -R; t <= R; t += step) {
+    gridLines.push([project([t, -R, 0]), project([t, R, 0])]);
+    gridLines.push([project([-R, t, 0]), project([R, t, 0])]);
   }
 
   const axes: { to: Vec3; label: string }[] = [
-    { to: [range, 0, 0], label: "X" },
-    { to: [0, range, 0], label: "Y" },
-    { to: [0, 0, range], label: "Z" },
+    { to: [R, 0, 0], label: "X" },
+    { to: [0, R, 0], label: "Y" },
+    { to: [0, 0, R], label: "Z" },
   ];
 
   const O = project([0, 0, 0]);

@@ -49,7 +49,7 @@ export function CambioBaseTool() {
     <div>
       <p style={{ color: "var(--text-muted)" }}>
         Scrivi le coordinate di un punto P nel nuovo riferimento RIF' = (O'; i', j', ...), dato il
-        riferimento di partenza. Formula: <b>p' = B⁻¹ (p − O')</b>, con B che ha per colonne i nuovi
+        riferimento di partenza. Formula: <b>P' = B⁻¹ (P − O')</b>, con B che ha per colonne i nuovi
         versori.
       </p>
 
@@ -89,7 +89,7 @@ export function CambioBaseTool() {
       {result && (
         <>
           <div className="result-box">
-            <MatrixDisplay matrix={result.pNew} prefix="p' =" />
+            <MatrixDisplay matrix={result.pNew} prefix="P' =" />
             <p style={{ marginTop: "0.4rem" }}>
               Coordinate di P nel nuovo riferimento: ({result.pNew.map((r) => r[0].toString()).join(", ")})
             </p>
@@ -122,7 +122,7 @@ export function CambioBaseTool() {
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", margin: "0.5rem 0" }}>
             <MatrixDisplay matrix={result.inv.value!} prefix="B^{-1} =" />
-            <MatrixDisplay matrix={result.diff} prefix="p - O' =" />
+            <MatrixDisplay matrix={result.diff} prefix="P - O' =" />
           </div>
 
           <Steps steps={[`det B = ${result.det}`, ...result.inv.steps]} title="Passaggi (inversione di B)" />

@@ -65,6 +65,6 @@ export const topicSummaries = [
   {
     to: "/teoria/cambio-base",
     title: "Cambiamenti di base",
-    desc: "Cambio di riferimento in 1, 2, 3 dimensioni: p' = B⁻¹(p − O')",
+    desc: "Cambio di riferimento in 1, 2, 3 dimensioni: P' = B⁻¹(P − O')",
   },
 ];

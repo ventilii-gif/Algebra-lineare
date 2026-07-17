@@ -45,10 +45,10 @@ export function CambioBase() {
         </p>
         <Formula block tex="B = \begin{pmatrix} a & b \\ c & d \end{pmatrix}, \qquad O' = \begin{pmatrix} x_{O'} \\ y_{O'} \end{pmatrix}" />
         <p>
-          Il legame tra le coordinate vecchie <Formula tex="p = (x,y)" /> e nuove{" "}
-          <Formula tex="p' = (x',y')" /> è:
+          Il legame tra le coordinate vecchie <Formula tex="P = (x,y)" /> e nuove{" "}
+          <Formula tex="P' = (x',y')" /> è:
         </p>
-        <Formula block tex="p = B\,p' + O' \qquad\Longleftrightarrow\qquad p' = B^{-1}\,(p - O')" />
+        <Formula block tex="P = B\,P' + O' \qquad\Longleftrightarrow\qquad P' = B^{-1}\,(P - O')" />
         <p>
           Prima si <b>sottrae la nuova origine</b> (traslazione), poi si <b>cambia base</b>{" "}
           moltiplicando per l'inversa <Formula tex="B^{-1}" />. La matrice B è invertibile se e solo
@@ -63,8 +63,8 @@ export function CambioBase() {
           punto P = (3, 2) nel vecchio riferimento.
         </p>
         <Formula block tex="B = \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}, \quad \det B = 2, \quad B^{-1} = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}" />
-        <Formula block tex="p - O' = \begin{pmatrix} 3-1 \\ 2-0 \end{pmatrix} = \begin{pmatrix} 2 \\ 2 \end{pmatrix}" />
-        <Formula block tex="p' = B^{-1}(p - O') = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} 2 \\ 2 \end{pmatrix} = \begin{pmatrix} 2 \\ 0 \end{pmatrix}" />
+        <Formula block tex="P - O' = \begin{pmatrix} 3-1 \\ 2-0 \end{pmatrix} = \begin{pmatrix} 2 \\ 2 \end{pmatrix}" />
+        <Formula block tex="P' = B^{-1}(P - O') = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} 2 \\ 2 \end{pmatrix} = \begin{pmatrix} 2 \\ 0 \end{pmatrix}" />
         <p>
           Quindi P ha coordinate <Formula tex="(x', y') = (2, 0)" /> in RIF'. Verifica:{" "}
           <Formula tex="O' + 2\,\vec i\,' + 0\,\vec j\,' = (1,0) + 2(1,1) = (3,2) = P" />. Graficamente
@@ -82,9 +82,9 @@ export function CambioBase() {
           Tutto si estende con una matrice <Formula tex="3\times 3" /> le cui colonne sono i nuovi
           versori <Formula tex="\vec i\,', \vec j\,', \vec k\,'" /> espressi nel vecchio riferimento:
         </p>
-        <Formula block tex="B = \big(\ \vec i\,' \ \big|\ \vec j\,' \ \big|\ \vec k\,'\ \big), \qquad p' = B^{-1}(p - O')" />
+        <Formula block tex="B = \big(\ \vec i\,' \ \big|\ \vec j\,' \ \big|\ \vec k\,'\ \big), \qquad P' = B^{-1}(P - O')" />
         <p><b>Esempio.</b> O' = (1,0,0), <Formula tex="\vec i\,'=(2,0,0)" />, <Formula tex="\vec j\,'=(0,1,0)" />, <Formula tex="\vec k\,'=(0,0,1)" />; P = (5,3,4):</p>
-        <Formula block tex="B = \begin{pmatrix} 2&0&0\\0&1&0\\0&0&1 \end{pmatrix}, \quad p - O' = \begin{pmatrix} 4\\3\\4 \end{pmatrix}, \quad p' = B^{-1}(p-O') = \begin{pmatrix} 2\\3\\4 \end{pmatrix}" />
+        <Formula block tex="B = \begin{pmatrix} 2&0&0\\0&1&0\\0&0&1 \end{pmatrix}, \quad P - O' = \begin{pmatrix} 4\\3\\4 \end{pmatrix}, \quad P' = B^{-1}(P-O') = \begin{pmatrix} 2\\3\\4 \end{pmatrix}" />
         <p>
           Verifica: <Formula tex="O' + 2\,\vec i\,' + 3\,\vec j\,' + 4\,\vec k\,' = (1,0,0)+(4,0,0)+(0,3,0)+(0,0,4) = (5,3,4)" />.
         </p>
@@ -107,9 +107,9 @@ export function CambioBase() {
         <h2>In sintesi</h2>
         <ul>
           <li>Colonne di B = nuovi versori scritti nel vecchio riferimento.</li>
-          <li>Traslazione dell'origine: <Formula tex="p - O'" />.</li>
+          <li>Traslazione dell'origine: <Formula tex="P - O'" />.</li>
           <li>Cambio di base: moltiplica per <Formula tex="B^{-1}" />.</li>
-          <li>Formula unica: <Formula tex="p' = B^{-1}(p - O')" /> (in 1, 2 o 3 dimensioni).</li>
+          <li>Formula unica: <Formula tex="P' = B^{-1}(P - O')" /> (in 1, 2 o 3 dimensioni).</li>
         </ul>
         <p>
           Prova qualsiasi cambiamento di riferimento, con passaggi e grafico, nel{" "}

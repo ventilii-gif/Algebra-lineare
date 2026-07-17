@@ -25,17 +25,38 @@ export function FramePlane2D({
   jPrime,
   point,
   pNew,
-  range = 5,
+  range,
   size = 360,
 }: Props) {
-  const scale = size / (2 * range);
+  // Se non è fornito un range, lo si calcola per contenere tutti gli elementi
+  // (origini, versori e punto P) con un margine.
+  const qCorner: Vec2 | null = pNew
+    ? [oPrime[0] + pNew[0] * iPrime[0], oPrime[1] + pNew[0] * iPrime[1]]
+    : null;
+  const keyPoints: Vec2[] = [
+    [0, 0],
+    oPrime,
+    [oPrime[0] + iPrime[0], oPrime[1] + iPrime[1]],
+    [oPrime[0] + jPrime[0], oPrime[1] + jPrime[1]],
+    point,
+    ...(qCorner ? [qCorner] : []),
+  ];
+  const R =
+    range ??
+    Math.max(3, Math.ceil(Math.max(...keyPoints.flatMap(([x, y]) => [Math.abs(x), Math.abs(y)]))) + 2);
+
+  const scale = size / (2 * R);
   const sx = (x: number) => size / 2 + x * scale;
   const sy = (y: number) => size / 2 - y * scale;
 
-  const ticks = Array.from({ length: 2 * range + 1 }, (_, i) => i - range);
+  // Passo della griglia intera: più rado quando l'area è grande, per non
+  // riempire il grafico di linee.
+  const step = R <= 12 ? 1 : Math.ceil(R / 10);
+  const ticks: number[] = [];
+  for (let t = -R; t <= R; t += step) ticks.push(t);
 
   // Griglia del nuovo riferimento (rette parallele a i' e j' passanti per O').
-  const gridN = range + 2;
+  const gridN = R + 2;
   const newGrid: { x1: number; y1: number; x2: number; y2: number }[] = [];
   for (let k = -gridN; k <= gridN; k++) {
     const bx = oPrime[0] + k * jPrime[0];
@@ -56,7 +77,7 @@ export function FramePlane2D({
     });
   }
 
-  const q: Vec2 | null = pNew ? [oPrime[0] + pNew[0] * iPrime[0], oPrime[1] + pNew[0] * iPrime[1]] : null;
+  const q: Vec2 | null = qCorner;
 
   function Arrow({ from, to, color, id, label }: { from: Vec2; to: Vec2; color: string; id: string; label: string }) {
     return (
