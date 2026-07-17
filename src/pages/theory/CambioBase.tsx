@@ -77,6 +77,31 @@ export function CambioBase() {
       </div>
 
       <div className="card">
+        <h2>Direzione inversa: da RIF' a RIF</h2>
+        <p>
+          Il problema opposto: se conosci le coordinate <Formula tex="Q' = (x', y')" /> di un punto
+          nel <b>nuovo</b> riferimento e vuoi le sue coordinate <Formula tex="Q = (x, y)" /> nel{" "}
+          <b>vecchio</b> riferimento, basta applicare direttamente la definizione{" "}
+          <Formula tex="Q = O' + x'\vec i\,' + y'\vec j\,'" />, cioè:
+        </p>
+        <Formula block tex="Q = B\,Q' + O'" />
+        <p>
+          Qui <b>non serve invertire nulla</b>: si moltiplica <Formula tex="Q'" /> per la matrice B
+          (le cui colonne sono i nuovi versori) e si somma la nuova origine O'. È l'operazione
+          inversa di <Formula tex="Q' = B^{-1}(Q - O')" />.
+        </p>
+        <p>
+          <b>Esempio</b> (stesso riferimento di prima: O' = (1,0), <Formula tex="\vec i\,'=(1,1)" />,{" "}
+          <Formula tex="\vec j\,'=(-1,1)" />). Dato <Formula tex="Q' = (2, 0)" /> in RIF':
+        </p>
+        <Formula block tex="Q = B\,Q' + O' = \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}\begin{pmatrix} 2 \\ 0 \end{pmatrix} + \begin{pmatrix} 1 \\ 0 \end{pmatrix} = \begin{pmatrix} 2 \\ 2 \end{pmatrix} + \begin{pmatrix} 1 \\ 0 \end{pmatrix} = \begin{pmatrix} 3 \\ 2 \end{pmatrix}" />
+        <p>
+          Quindi Q ha coordinate (3, 2) in RIF (coerente con l'esempio diretto). Vale in 1, 2 o 3
+          dimensioni: <Formula tex="Q = B\,Q' + O'" />.
+        </p>
+      </div>
+
+      <div className="card">
         <h2>3 dimensioni</h2>
         <p>
           Tutto si estende con una matrice <Formula tex="3\times 3" /> le cui colonne sono i nuovi

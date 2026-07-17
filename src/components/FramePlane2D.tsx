@@ -10,6 +10,7 @@ interface Props {
   jPrime: Vec2;
   point: Vec2;
   pNew?: Vec2; // coordinate di P nel nuovo riferimento (per la decomposizione)
+  pointLabel?: string;
   range?: number;
   size?: number;
 }
@@ -25,6 +26,7 @@ export function FramePlane2D({
   jPrime,
   point,
   pNew,
+  pointLabel = "P",
   range,
   size = 360,
 }: Props) {
@@ -172,7 +174,7 @@ export function FramePlane2D({
 
       {/* P */}
       <circle cx={sx(point[0])} cy={sy(point[1])} r={4} fill={COL_PT} />
-      <text x={sx(point[0]) + 8} y={sy(point[1]) - 8} fill={COL_PT} fontSize={14} fontWeight={700}>P</text>
+      <text x={sx(point[0]) + 8} y={sy(point[1]) - 8} fill={COL_PT} fontSize={14} fontWeight={700}>{pointLabel}</text>
     </svg>
   );
 }

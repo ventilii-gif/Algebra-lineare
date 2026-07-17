@@ -14,6 +14,7 @@ interface Props {
   kPrime: Vec3;
   point: Vec3;
   pNew?: Vec3;
+  pointLabel?: string;
   range?: number;
   size?: number;
 }
@@ -33,6 +34,7 @@ export function FramePlane3D({
   kPrime,
   point,
   pNew,
+  pointLabel = "P",
   range,
   size = 400,
 }: Props) {
@@ -170,7 +172,7 @@ export function FramePlane3D({
         <circle cx={Op[0]} cy={Op[1]} r={3.5} fill={COL_NEW} />
         <text x={Op[0] - 16} y={Op[1] + 14} fill={COL_NEW} fontSize={13} fontWeight={700}>O'</text>
         <circle cx={Pp[0]} cy={Pp[1]} r={4} fill={COL_PT} />
-        <text x={Pp[0] + 7} y={Pp[1] - 7} fill={COL_PT} fontSize={14} fontWeight={700}>P</text>
+        <text x={Pp[0] + 7} y={Pp[1] - 7} fill={COL_PT} fontSize={14} fontWeight={700}>{pointLabel}</text>
       </svg>
 
       <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", justifyContent: "center", marginTop: "0.4rem" }}>
