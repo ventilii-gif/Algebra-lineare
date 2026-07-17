@@ -1,7 +1,22 @@
 import { useMemo, useState } from "react";
-import { questions } from "../data/quiz";
+import { questions, type Question } from "../data/quiz";
 
 const topics = ["Tutti", ...Array.from(new Set(questions.map((q) => q.topic)))];
+
+// Mescola l'ordine delle opzioni così la risposta corretta non è mai in
+// posizione prevedibile. Restituisce le opzioni riordinate e l'indice in cui
+// è finita la risposta corretta.
+function shuffleQuestion(q: Question) {
+  const order = q.options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return {
+    options: order.map((i) => q.options[i]),
+    correctIndex: order.indexOf(q.correct),
+  };
+}
 
 export function Quiz() {
   const [topic, setTopic] = useState("Tutti");
@@ -16,11 +31,15 @@ export function Quiz() {
   );
   const q = pool[index % pool.length];
 
+  // Ricalcolato (quindi rimescolato) a ogni cambio di domanda, ma stabile
+  // mentre si risponde alla domanda corrente.
+  const shuffled = useMemo(() => shuffleQuestion(q), [q, index]);
+
   function choose(i: number) {
     if (selected !== null) return;
     setSelected(i);
     setAnswered((a) => a + 1);
-    if (i === q.correct) setScore((s) => s + 1);
+    if (i === shuffled.correctIndex) setScore((s) => s + 1);
   }
 
   function next() {
@@ -35,6 +54,8 @@ export function Quiz() {
     setScore(0);
     setAnswered(0);
   }
+
+  const isCorrect = selected === shuffled.correctIndex;
 
   return (
     <div>
@@ -55,10 +76,10 @@ export function Quiz() {
         </p>
         <h3>{q.prompt}</h3>
 
-        {q.options.map((opt, i) => {
+        {shuffled.options.map((opt, i) => {
           let cls = "quiz-option";
           if (selected !== null) {
-            if (i === q.correct) cls += " correct";
+            if (i === shuffled.correctIndex) cls += " correct";
             else if (i === selected) cls += " incorrect";
           }
           return (
@@ -69,8 +90,8 @@ export function Quiz() {
         })}
 
         {selected !== null && (
-          <div className={`result-box ${selected === q.correct ? "" : "error"}`}>
-            <p style={{ fontWeight: 600 }}>{selected === q.correct ? "Corretto!" : "Non corretto"}</p>
+          <div className={`result-box ${isCorrect ? "" : "error"}`}>
+            <p style={{ fontWeight: 600 }}>{isCorrect ? "Corretto!" : "Non corretto"}</p>
             <p>{q.explanation}</p>
           </div>
         )}
