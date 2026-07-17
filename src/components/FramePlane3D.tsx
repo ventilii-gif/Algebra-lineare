@@ -88,12 +88,30 @@ export function FramePlane3D({
   const Op = project(oPrime);
   const Pp = project(point);
 
-  // decomposizione
-  let decomp: [number, number][] | null = null;
+  // decomposizione: parallelepipedo con O' e P come vertici opposti e spigoli
+  // paralleli a x'·i', y'·j', z'·k' (mostra tutte le proiezioni).
+  let box: { from: [number, number]; to: [number, number]; solid: boolean }[] = [];
   if (pNew) {
-    const q1 = add(oPrime, iPrime, pNew[0]);
-    const q2 = add(q1, jPrime, pNew[1]);
-    decomp = [Op, project(q1), project(q2), Pp];
+    const a: Vec3 = [iPrime[0] * pNew[0], iPrime[1] * pNew[0], iPrime[2] * pNew[0]];
+    const b: Vec3 = [jPrime[0] * pNew[1], jPrime[1] * pNew[1], jPrime[2] * pNew[1]];
+    const c: Vec3 = [kPrime[0] * pNew[2], kPrime[1] * pNew[2], kPrime[2] * pNew[2]];
+    const V = (i: number, j: number, k: number): Vec3 => [
+      oPrime[0] + i * a[0] + j * b[0] + k * c[0],
+      oPrime[1] + i * a[1] + j * b[1] + k * c[1],
+      oPrime[2] + i * a[2] + j * b[2] + k * c[2],
+    ];
+    const edges: [number[], number[], boolean][] = [
+      [[0, 0, 0], [1, 0, 0], true], [[0, 0, 0], [0, 1, 0], true], [[0, 0, 0], [0, 0, 1], true],
+      [[1, 0, 0], [1, 1, 0], false], [[1, 0, 0], [1, 0, 1], false],
+      [[0, 1, 0], [1, 1, 0], false], [[0, 1, 0], [0, 1, 1], false],
+      [[0, 0, 1], [1, 0, 1], false], [[0, 0, 1], [0, 1, 1], false],
+      [[1, 1, 0], [1, 1, 1], false], [[1, 0, 1], [1, 1, 1], false], [[0, 1, 1], [1, 1, 1], false],
+    ];
+    box = edges.map(([u, w, solid]) => ({
+      from: project(V(u[0], u[1], u[2])),
+      to: project(V(w[0], w[1], w[2])),
+      solid,
+    }));
   }
 
   function Arrow({ from, to, color, id, label }: { from: [number, number]; to: [number, number]; color: string; id: string; label: string }) {
@@ -128,16 +146,20 @@ export function FramePlane3D({
         })}
         <text x={O[0] - 14} y={O[1] + 14} fill={COL_OLD} fontSize={13} fontWeight={700}>O</text>
 
-        {/* decomposizione */}
-        {decomp && (
-          <polyline
-            points={decomp.map((p) => `${p[0]},${p[1]}`).join(" ")}
-            fill="none"
+        {/* decomposizione: parallelepipedo (spigoli pieni da O', il resto tratteggiato) */}
+        {box.map((e, i) => (
+          <line
+            key={i}
+            x1={e.from[0]}
+            y1={e.from[1]}
+            x2={e.to[0]}
+            y2={e.to[1]}
             stroke={COL_PT}
-            strokeWidth={1.5}
-            strokeDasharray="5,4"
+            strokeWidth={e.solid ? 2 : 1.3}
+            strokeDasharray={e.solid ? undefined : "5,4"}
+            opacity={e.solid ? 1 : 0.8}
           />
-        )}
+        ))}
 
         {/* nuova base */}
         <Arrow from={Op} to={project(add(oPrime, iPrime))} color={COL_NEW} id="new" label="i'" />

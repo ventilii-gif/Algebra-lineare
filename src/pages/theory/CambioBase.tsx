@@ -83,23 +83,27 @@ export function CambioBase() {
           versori <Formula tex="\vec i\,', \vec j\,', \vec k\,'" /> espressi nel vecchio riferimento:
         </p>
         <Formula block tex="B = \big(\ \vec i\,' \ \big|\ \vec j\,' \ \big|\ \vec k\,'\ \big), \qquad P' = B^{-1}(P - O')" />
-        <p><b>Esempio.</b> O' = (1,0,0), <Formula tex="\vec i\,'=(2,0,0)" />, <Formula tex="\vec j\,'=(0,1,0)" />, <Formula tex="\vec k\,'=(0,0,1)" />; P = (5,3,4):</p>
-        <Formula block tex="B = \begin{pmatrix} 2&0&0\\0&1&0\\0&0&1 \end{pmatrix}, \quad P - O' = \begin{pmatrix} 4\\3\\4 \end{pmatrix}, \quad P' = B^{-1}(P-O') = \begin{pmatrix} 2\\3\\4 \end{pmatrix}" />
         <p>
-          Verifica: <Formula tex="O' + 2\,\vec i\,' + 3\,\vec j\,' + 4\,\vec k\,' = (1,0,0)+(4,0,0)+(0,3,0)+(0,0,4) = (5,3,4)" />.
+          <b>Esempio con base obliqua</b> (versori combinazione di i, j e k):{" "}
+          <Formula tex="\vec i\,'=(1,1,0)" />, <Formula tex="\vec j\,'=(0,1,1)" />,{" "}
+          <Formula tex="\vec k\,'=(1,0,1)" />; O' = (1,1,1), P = (3,4,4).
+        </p>
+        <Formula block tex="B = \begin{pmatrix} 1&0&1\\1&1&0\\0&1&1 \end{pmatrix}, \quad P - O' = \begin{pmatrix} 2\\3\\3 \end{pmatrix}, \quad P' = B^{-1}(P-O') = \begin{pmatrix} 1\\2\\1 \end{pmatrix}" />
+        <p>
+          Verifica: <Formula tex="O' + 1\,\vec i\,' + 2\,\vec j\,' + 1\,\vec k\,' = (1,1,1)+(1,1,0)+(0,2,2)+(1,0,1) = (3,4,4)" />.
         </p>
         <p style={{ color: "var(--text-muted)" }}>
           Vista assonometrica (grigio = vecchio riferimento con assi X, Y, Z; viola = nuovo
-          riferimento; rosso = punto P e la sua decomposizione). Usa la barra per ruotare:
+          riferimento; rosso = punto P e il parallelepipedo della sua decomposizione
+          <Formula tex="P = O' + x'\vec i\,' + y'\vec j\,' + z'\vec k\,'" />). Usa la barra per ruotare:
         </p>
         <FramePlane3D
-          oPrime={[1, 0, 0]}
-          iPrime={[2, 0, 0]}
-          jPrime={[0, 1, 0]}
-          kPrime={[0, 0, 1]}
-          point={[5, 3, 4]}
-          pNew={[2, 3, 4]}
-          range={6}
+          oPrime={[1, 1, 1]}
+          iPrime={[1, 1, 0]}
+          jPrime={[0, 1, 1]}
+          kPrime={[1, 0, 1]}
+          point={[3, 4, 4]}
+          pNew={[1, 2, 1]}
         />
       </div>
 
