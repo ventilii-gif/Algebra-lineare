@@ -18,6 +18,7 @@ export const navGroups: NavGroup[] = [
       { to: "/teoria/sistemi-lineari", label: "Sistemi lineari" },
       { to: "/teoria/determinanti", label: "Determinanti" },
       { to: "/teoria/autovalori", label: "Autovalori e autovettori" },
+      { to: "/teoria/cambio-base", label: "Cambiamenti di base" },
     ],
   },
   {
@@ -60,5 +61,10 @@ export const topicSummaries = [
     to: "/teoria/autovalori",
     title: "Autovalori e autovettori",
     desc: "Polinomio caratteristico, diagonalizzazione",
+  },
+  {
+    to: "/teoria/cambio-base",
+    title: "Cambiamenti di base",
+    desc: "Cambio di riferimento in 1, 2, 3 dimensioni: p' = B⁻¹(p − O')",
   },
 ];

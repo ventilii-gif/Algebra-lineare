@@ -7,6 +7,7 @@ import { Matrici } from "./pages/theory/Matrici";
 import { SistemiLineari } from "./pages/theory/SistemiLineari";
 import { Determinanti } from "./pages/theory/Determinanti";
 import { Autovalori } from "./pages/theory/Autovalori";
+import { CambioBase } from "./pages/theory/CambioBase";
 import { Calcolatore } from "./pages/Calcolatore";
 import { Visualizzazioni } from "./pages/Visualizzazioni";
 import { Quiz } from "./pages/Quiz";
@@ -23,6 +24,7 @@ function App() {
           <Route path="/teoria/sistemi-lineari" element={<SistemiLineari />} />
           <Route path="/teoria/determinanti" element={<Determinanti />} />
           <Route path="/teoria/autovalori" element={<Autovalori />} />
+          <Route path="/teoria/cambio-base" element={<CambioBase />} />
           <Route path="/calcolatore" element={<Calcolatore />} />
           <Route path="/visualizzazioni" element={<Visualizzazioni />} />
           <Route path="/quiz" element={<Quiz />} />
