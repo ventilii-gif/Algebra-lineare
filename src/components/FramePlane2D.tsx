@@ -77,8 +77,6 @@ export function FramePlane2D({
     });
   }
 
-  const q: Vec2 | null = qCorner;
-
   function Arrow({ from, to, color, id, label }: { from: Vec2; to: Vec2; color: string; id: string; label: string }) {
     return (
       <g>
@@ -121,6 +119,18 @@ export function FramePlane2D({
         <line key={`n${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke={COL_GRID} strokeWidth={1} opacity={0.28} />
       ))}
 
+      {/* assi del nuovo riferimento (rette per O' lungo i' e j') */}
+      <line
+        x1={sx(oPrime[0] - gridN * iPrime[0])} y1={sy(oPrime[1] - gridN * iPrime[1])}
+        x2={sx(oPrime[0] + gridN * iPrime[0])} y2={sy(oPrime[1] + gridN * iPrime[1])}
+        stroke={COL_NEW} strokeWidth={1.2} opacity={0.6}
+      />
+      <line
+        x1={sx(oPrime[0] - gridN * jPrime[0])} y1={sy(oPrime[1] - gridN * jPrime[1])}
+        x2={sx(oPrime[0] + gridN * jPrime[0])} y2={sy(oPrime[1] + gridN * jPrime[1])}
+        stroke={COL_NEW} strokeWidth={1.2} opacity={0.6}
+      />
+
       {/* assi del vecchio riferimento */}
       <line x1={0} y1={sy(0)} x2={size} y2={sy(0)} stroke={COL_OLD} strokeWidth={1.4} />
       <line x1={sx(0)} y1={0} x2={sx(0)} y2={size} stroke={COL_OLD} strokeWidth={1.4} />
@@ -130,13 +140,27 @@ export function FramePlane2D({
       <Arrow from={[0, 0]} to={[0, 1]} color={COL_OLD} id="old" label="j" />
       <text x={sx(0) - 14} y={sy(0) + 16} fill={COL_OLD} fontSize={13} fontWeight={700}>O</text>
 
-      {/* decomposizione P = O' + x'i' + y'j' */}
-      {q && (
-        <>
-          <line x1={sx(oPrime[0])} y1={sy(oPrime[1])} x2={sx(q[0])} y2={sy(q[1])} stroke={COL_PT} strokeWidth={1.5} strokeDasharray="5,4" />
-          <line x1={sx(q[0])} y1={sy(q[1])} x2={sx(point[0])} y2={sy(point[1])} stroke={COL_PT} strokeWidth={1.5} strokeDasharray="5,4" />
-        </>
-      )}
+      {/* decomposizione P = O' + x'i' + y'j': parallelogramma con entrambe le proiezioni.
+          A = proiezione di P sull'asse i' (lungo j'); Bp = proiezione sull'asse j' (lungo i'). */}
+      {pNew && (() => {
+        const A: Vec2 = [oPrime[0] + pNew[0] * iPrime[0], oPrime[1] + pNew[0] * iPrime[1]];
+        const Bp: Vec2 = [oPrime[0] + pNew[1] * jPrime[0], oPrime[1] + pNew[1] * jPrime[1]];
+        return (
+          <>
+            {/* lati lungo gli assi (pieni) */}
+            <line x1={sx(oPrime[0])} y1={sy(oPrime[1])} x2={sx(A[0])} y2={sy(A[1])} stroke={COL_PT} strokeWidth={2} />
+            <line x1={sx(oPrime[0])} y1={sy(oPrime[1])} x2={sx(Bp[0])} y2={sy(Bp[1])} stroke={COL_PT} strokeWidth={2} />
+            {/* proiezioni (tratteggiate): da A e da Bp fino a P */}
+            <line x1={sx(A[0])} y1={sy(A[1])} x2={sx(point[0])} y2={sy(point[1])} stroke={COL_PT} strokeWidth={1.4} strokeDasharray="5,4" />
+            <line x1={sx(Bp[0])} y1={sy(Bp[1])} x2={sx(point[0])} y2={sy(point[1])} stroke={COL_PT} strokeWidth={1.4} strokeDasharray="5,4" />
+            {/* punti proiezione */}
+            <circle cx={sx(A[0])} cy={sy(A[1])} r={3} fill={COL_PT} />
+            <text x={sx(A[0]) + 5} y={sy(A[1]) + 14} fill={COL_PT} fontSize={12} fontWeight={700}>x'·i'</text>
+            <circle cx={sx(Bp[0])} cy={sy(Bp[1])} r={3} fill={COL_PT} />
+            <text x={sx(Bp[0]) + 5} y={sy(Bp[1]) + 14} fill={COL_PT} fontSize={12} fontWeight={700}>y'·j'</text>
+          </>
+        );
+      })()}
 
       {/* nuova base i', j' */}
       <Arrow from={oPrime} to={[oPrime[0] + iPrime[0], oPrime[1] + iPrime[1]]} color={COL_NEW} id="new" label="i'" />
