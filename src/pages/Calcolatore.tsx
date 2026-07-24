@@ -5,8 +5,9 @@ import { InversaTool } from "./calc/InversaTool";
 import { SistemaTool } from "./calc/SistemaTool";
 import { AutovaloriTool } from "./calc/AutovaloriTool";
 import { CambioBaseTool } from "./calc/CambioBaseTool";
+import { ProiezioniTool } from "./calc/ProiezioniTool";
 
-type Tab = "operazioni" | "determinante" | "inversa" | "sistema" | "autovalori" | "cambiobase";
+type Tab = "operazioni" | "determinante" | "inversa" | "sistema" | "autovalori" | "cambiobase" | "proiezioni";
 
 const tabs: { id: Tab; label: string }[] = [
   { id: "operazioni", label: "Operazioni tra matrici" },
@@ -15,6 +16,7 @@ const tabs: { id: Tab; label: string }[] = [
   { id: "sistema", label: "Sistemi lineari" },
   { id: "autovalori", label: "Autovalori e autovettori" },
   { id: "cambiobase", label: "Cambio di base" },
+  { id: "proiezioni", label: "Proiezioni e distanze" },
 ];
 
 export function Calcolatore() {
@@ -44,6 +46,7 @@ export function Calcolatore() {
         {tab === "sistema" && <SistemaTool />}
         {tab === "autovalori" && <AutovaloriTool />}
         {tab === "cambiobase" && <CambioBaseTool />}
+        {tab === "proiezioni" && <ProiezioniTool />}
       </div>
     </div>
   );
