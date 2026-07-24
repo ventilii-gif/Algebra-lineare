@@ -8,6 +8,7 @@ interface Props {
   b: number;
   c: number;
   point: Vec2;
+  markers?: { p: Vec2; label: string }[];
   size?: number;
 }
 
@@ -15,14 +16,14 @@ const COL_AX = "#8a8a9a";
 const COL_LINE = "#5b5bd6";
 const COL_PT = "#d64545";
 
-export function LineProjectionPlot({ a, b, c, point, size = 340 }: Props) {
+export function LineProjectionPlot({ a, b, c, point, markers = [], size = 340 }: Props) {
   const [x0, y0] = point;
   const denom = a * a + b * b || 1;
   const s = (a * x0 + b * y0 + c) / denom;
   const H: Vec2 = [x0 - s * a, y0 - s * b];
   const dist = Math.abs(a * x0 + b * y0 + c) / Math.sqrt(denom);
 
-  const pts: Vec2[] = [[0, 0], point, H];
+  const pts: Vec2[] = [[0, 0], point, H, ...markers.map((m) => m.p)];
   const R = Math.max(3, Math.ceil(Math.max(...pts.flatMap(([x, y]) => [Math.abs(x), Math.abs(y)]))) + 1);
   const scale = size / (2 * R);
   const sx = (x: number) => size / 2 + x * scale;
@@ -61,6 +62,13 @@ export function LineProjectionPlot({ a, b, c, point, size = 340 }: Props) {
       <text x={sx(point[0]) + 8} y={sy(point[1]) - 8} fill={COL_PT} fontSize={14} fontWeight={700}>P</text>
       <circle cx={sx(H[0])} cy={sy(H[1])} r={3.5} fill={COL_LINE} />
       <text x={sx(H[0]) + 8} y={sy(H[1]) + 14} fill={COL_LINE} fontSize={13} fontWeight={700}>H</text>
+
+      {markers.map((m, i) => (
+        <g key={i}>
+          <circle cx={sx(m.p[0])} cy={sy(m.p[1])} r={3.5} fill={COL_AX} />
+          <text x={sx(m.p[0]) + 7} y={sy(m.p[1]) - 7} fill={COL_AX} fontSize={13} fontWeight={700}>{m.label}</text>
+        </g>
+      ))}
     </svg>
   );
 }
