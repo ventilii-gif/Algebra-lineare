@@ -19,6 +19,7 @@ export const navGroups: NavGroup[] = [
       { to: "/teoria/determinanti", label: "Determinanti" },
       { to: "/teoria/autovalori", label: "Autovalori e autovettori" },
       { to: "/teoria/cambio-base", label: "Cambiamenti di base" },
+      { to: "/teoria/proiezioni-distanze", label: "Proiezioni e distanze" },
     ],
   },
   {
@@ -66,5 +67,10 @@ export const topicSummaries = [
     to: "/teoria/cambio-base",
     title: "Cambiamenti di base",
     desc: "Cambio di riferimento in 1, 2, 3 dimensioni: P' = B⁻¹(P − O')",
+  },
+  {
+    to: "/teoria/proiezioni-distanze",
+    title: "Proiezioni e distanze",
+    desc: "Punto–retta in R² e punto–piano in R³, con metodo delle equazioni e vettoriale",
   },
 ];
