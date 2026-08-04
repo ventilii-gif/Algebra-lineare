@@ -189,6 +189,50 @@ export function rank(a: Mat): number {
   return gaussJordan(a).pivotCols.length;
 }
 
+// Eliminazione di Gauss (in avanti): riduce a forma a scala eliminando solo
+// gli elementi SOTTO ciascun pivot, senza normalizzare i pivot a 1.
+export interface EliminationResult {
+  matrix: Mat;
+  steps: string[];
+  rank: number;
+  pivotCols: number[];
+}
+
+export function gaussEliminationWithSteps(input: Mat): EliminationResult {
+  const m = cloneMat(input);
+  const rows = m.length;
+  const cols = m[0]?.length ?? 0;
+  const steps: string[] = [];
+  const pivotCols: number[] = [];
+  let pivotRow = 0;
+
+  for (let col = 0; col < cols && pivotRow < rows; col++) {
+    let sel = -1;
+    for (let r = pivotRow; r < rows; r++) {
+      if (!m[r][col].isZero()) {
+        sel = r;
+        break;
+      }
+    }
+    if (sel === -1) continue;
+    if (sel !== pivotRow) {
+      [m[sel], m[pivotRow]] = [m[pivotRow], m[sel]];
+      steps.push(`Scambio riga R${pivotRow + 1} <-> R${sel + 1}`);
+    }
+    const pivot = m[pivotRow][col];
+    for (let r = pivotRow + 1; r < rows; r++) {
+      if (m[r][col].isZero()) continue;
+      const factor = m[r][col].div(pivot);
+      m[r] = m[r].map((val, j) => val.sub(factor.mul(m[pivotRow][j])));
+      steps.push(`R${r + 1} -> R${r + 1} - (${factor}) * R${pivotRow + 1}`);
+    }
+    pivotCols.push(col);
+    pivotRow++;
+  }
+  steps.push(`Forma a scala ottenuta. Rango = ${pivotCols.length}.`);
+  return { matrix: m, steps, rank: pivotCols.length, pivotCols };
+}
+
 // ---------- Inverse ----------
 
 export function inverseWithSteps(a: Mat): StepResult<Mat | null> {
