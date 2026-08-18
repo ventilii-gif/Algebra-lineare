@@ -1,11 +1,96 @@
+import { useState } from "react";
 import { Formula } from "../../components/Formula";
+import { ExerciseSet, type Exercise } from "../../components/section/ExerciseSet";
+import { SectionQuiz } from "../../components/section/SectionQuiz";
+import { VettoriSimulazione } from "./vettori/VettoriSimulazione";
+
+type Sub = "teoria" | "simulazione" | "esercizi" | "quiz";
+
+const subs: { id: Sub; label: string }[] = [
+  { id: "teoria", label: "Teoria" },
+  { id: "simulazione", label: "Simulazione" },
+  { id: "esercizi", label: "Esercizi" },
+  { id: "quiz", label: "Quiz" },
+];
+
+const esercizi: Exercise[] = [
+  {
+    level: "Facile",
+    prompt: (<span>Dati <Formula tex="\vec u = (2, 1)" /> e <Formula tex="\vec v = (3, 4)" />, calcola <Formula tex="\vec u + \vec v" />.</span>),
+    expected: [5, 5],
+    solutionText: "(5, 5)",
+    placeholder: "es. 5,5",
+    hints: ["Si sommano le componenti corrispondenti.", "(2+3, 1+4)."],
+  },
+  {
+    level: "Facile",
+    prompt: (<span>Calcola <Formula tex="3\cdot(2, -1)" /> (prodotto per uno scalare).</span>),
+    expected: [6, -3],
+    solutionText: "(6, -3)",
+    placeholder: "es. 6,-3",
+    hints: ["Si moltiplica ogni componente per 3.", "(3·2, 3·(-1))."],
+  },
+  {
+    level: "Medio",
+    prompt: (<span>Calcola il prodotto scalare <Formula tex="(1, 2, 3)\cdot(0, 1, -1)" />.</span>),
+    expected: [-1],
+    solutionText: "-1",
+    placeholder: "es. -1",
+    hints: ["Somma dei prodotti componente per componente.", "1·0 + 2·1 + 3·(-1)."],
+  },
+  {
+    level: "Medio",
+    prompt: (<span>Calcola il modulo <Formula tex="|(3, 4)|" />.</span>),
+    expected: [5],
+    solutionText: "5",
+    placeholder: "es. 5",
+    hints: ["Il modulo è la radice della somma dei quadrati.", "√(3² + 4²) = √25."],
+  },
+  {
+    level: "Difficile",
+    prompt: (<span>Calcola il prodotto vettoriale <Formula tex="(1, 0, 0)\times(0, 1, 0)" />.</span>),
+    expected: [0, 0, 1],
+    solutionText: "(0, 0, 1)",
+    placeholder: "es. 0,0,1",
+    hints: ["Usa la formula del prodotto vettoriale.", "È il versore perpendicolare a entrambi: k = (0,0,1)."],
+  },
+  {
+    level: "Difficile",
+    prompt: (<span>Trova il versore (modulo 1) associato a <Formula tex="(0, 3)" />.</span>),
+    expected: [0, 1],
+    solutionText: "(0, 1)",
+    placeholder: "es. 0,1",
+    hints: ["Dividi il vettore per il suo modulo.", "|(0,3)| = 3, quindi (0,3)/3."],
+  },
+];
 
 export function Vettori() {
+  const [sub, setSub] = useState<Sub>("teoria");
+
   return (
     <div>
       <span className="pill">Teoria · 1</span>
       <h1>Vettori</h1>
 
+      <div className="tab-row">
+        {subs.map((s) => (
+          <button key={s.id} className={`tab-btn ${sub === s.id ? "active" : ""}`} onClick={() => setSub(s.id)}>
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {sub === "teoria" && <Teoria />}
+      {sub === "simulazione" && <VettoriSimulazione />}
+      {sub === "esercizi" && <ExerciseSet exercises={esercizi} />}
+      {sub === "quiz" && <SectionQuiz topic="Vettori" />}
+    </div>
+  );
+}
+
+function Teoria() {
+  return (
+    <div>
       <div className="card">
         <h2>Spazi affini e punti</h2>
         <p>
