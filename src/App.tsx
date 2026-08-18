@@ -4,6 +4,7 @@ import { Home } from "./pages/Home";
 import { Vettori } from "./pages/theory/Vettori";
 import { SpaziVettoriali } from "./pages/theory/SpaziVettoriali";
 import { Matrici } from "./pages/theory/Matrici";
+import { TrasformazioniLineari } from "./pages/theory/TrasformazioniLineari";
 import { SistemiLineari } from "./pages/theory/SistemiLineari";
 import { Determinanti } from "./pages/theory/Determinanti";
 import { Autovalori } from "./pages/theory/Autovalori";
@@ -22,6 +23,7 @@ function App() {
           <Route path="/teoria/vettori" element={<Vettori />} />
           <Route path="/teoria/spazi-vettoriali" element={<SpaziVettoriali />} />
           <Route path="/teoria/matrici" element={<Matrici />} />
+          <Route path="/teoria/trasformazioni-lineari" element={<TrasformazioniLineari />} />
           <Route path="/teoria/sistemi-lineari" element={<SistemiLineari />} />
           <Route path="/teoria/determinanti" element={<Determinanti />} />
           <Route path="/teoria/autovalori" element={<Autovalori />} />

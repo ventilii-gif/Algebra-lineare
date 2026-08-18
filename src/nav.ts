@@ -15,6 +15,7 @@ export const navGroups: NavGroup[] = [
       { to: "/teoria/vettori", label: "Vettori" },
       { to: "/teoria/spazi-vettoriali", label: "Spazi vettoriali" },
       { to: "/teoria/matrici", label: "Matrici" },
+      { to: "/teoria/trasformazioni-lineari", label: "Trasformazioni lineari" },
       { to: "/teoria/sistemi-lineari", label: "Sistemi lineari" },
       { to: "/teoria/determinanti", label: "Determinanti" },
       { to: "/teoria/autovalori", label: "Autovalori e autovettori" },
@@ -47,6 +48,11 @@ export const topicSummaries = [
     to: "/teoria/matrici",
     title: "Matrici",
     desc: "Operazioni, prodotto righe per colonne, inversa, trasposta",
+  },
+  {
+    to: "/teoria/trasformazioni-lineari",
+    title: "Trasformazioni lineari",
+    desc: "Matrice associata, nucleo e immagine, teorema del rango, composizione",
   },
   {
     to: "/teoria/sistemi-lineari",
