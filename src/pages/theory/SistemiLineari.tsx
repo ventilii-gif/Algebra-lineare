@@ -1,10 +1,20 @@
 import { Formula } from "../../components/Formula";
+import { SectionShell } from "../../components/section/SectionShell";
+import { SystemSim } from "../../components/sim/SystemSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function SistemiLineari() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>Risolvi <Formula tex="\begin{cases}x+y=3\\ 2x-y=0\end{cases}" />. Scrivi (x, y).</span>), expected: [1, 2], solutionText: "(1, 2)", placeholder: "es. 1,2", hints: ["Somma le due equazioni per eliminare y.", "3x = 3 → x = 1."] },
+  { level: "Facile", prompt: (<span>Un sistema omogeneo <Formula tex="A\vec x=\vec 0" /> ha sempre almeno una soluzione: quale? Scrivi (x, y).</span>), expected: [0, 0], solutionText: "(0, 0)", placeholder: "es. 0,0", hints: ["La soluzione banale."] },
+  { level: "Medio", prompt: (<span>Se <Formula tex="\det A = -3" /> per un sistema 2×2, con Cramer <Formula tex="x=\frac{\det A_1}{\det A}" />: se <Formula tex="\det A_1 = -3" />, quanto vale x?</span>), expected: [1], solutionText: "1", placeholder: "es. 1", hints: ["(-3)/(-3)."] },
+  { level: "Medio", prompt: (<span>Con <Formula tex="\text{rg}(A)=\text{rg}([A|b])=2" /> e 4 incognite, quanti parametri liberi ha la soluzione?</span>), expected: [2], solutionText: "2 (∞²)", placeholder: "es. 2", hints: ["n − rg(A) = 4 − 2."] },
+  { level: "Difficile", prompt: (<span>Due rette parallele e distinte: quante soluzioni ha il sistema? (0 = nessuna, 1 = una, 2 = infinite)</span>), expected: [0], solutionText: "0 — nessuna soluzione (impossibile)", placeholder: "0/1/2", hints: ["Rette parallele non si incontrano."] },
+  { level: "Difficile", prompt: (<span>Sistema omogeneo 2×2 con <Formula tex="\det A = 0" />: ha soluzioni non banali? (1 = sì, 0 = no)</span>), expected: [1], solutionText: "1 — sì, infinite", placeholder: "0 oppure 1", hints: ["det = 0 ⇒ rg < n ⇒ soluzioni non banali."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 4</span>
-      <h1>Sistemi lineari</h1>
+    <>
 
       <div className="card">
         <h2>Forma generale</h2>
@@ -65,6 +75,19 @@ export function SistemiLineari() {
           Rouché-Capelli.
         </p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function SistemiLineari() {
+  return (
+    <SectionShell
+      pill="Teoria · 4"
+      title="Sistemi lineari"
+      teoria={<Teoria />}
+      simulazione={<SystemSim />}
+      esercizi={esercizi}
+      quizTopic="Sistemi lineari"
+    />
   );
 }

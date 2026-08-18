@@ -2,13 +2,22 @@ import { Formula } from "../../components/Formula";
 import { FramePlane2D } from "../../components/FramePlane2D";
 import { FramePlane3D } from "../../components/FramePlane3D";
 import { Link } from "react-router-dom";
+import { SectionShell } from "../../components/section/SectionShell";
+import { CambioBaseSim } from "../../components/sim/CambioBaseSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function CambioBase() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>In 1D: O' in <Formula tex="x_{O'}=2" />, <Formula tex="\vec i\,'=2\vec i" />, P in x=7. Quanto vale x'? (formula (x−x_O')/α)</span>), expected: [2.5], solutionText: "5/2", placeholder: "es. 5/2", hints: ["(7 − 2) / 2."] },
+  { level: "Medio", prompt: (<span>Con <Formula tex="B=\begin{pmatrix}1&-1\\1&1\end{pmatrix}" />, O'=(1,0), P=(3,2): quanto vale <Formula tex="P - O'" />? Scrivi le due componenti.</span>), expected: [2, 2], solutionText: "(2, 2)", placeholder: "es. 2,2", hints: ["Sottrai O' da P."] },
+  { level: "Medio", prompt: (<span>Continuando: <Formula tex="P' = B^{-1}(P-O')" /> dà quali coordinate? (risultato dell'esempio)</span>), expected: [2, 0], solutionText: "(2, 0)", placeholder: "es. 2,0", hints: ["B⁻¹ = ½[[1,1],[−1,1]].", "Moltiplica per (2,2)."] },
+  { level: "Facile", prompt: (<span>Direzione inversa: con <Formula tex="Q'=(2,0)" />, la formula <Formula tex="Q=B Q'+O'" /> dà? Scrivi (x, y).</span>), expected: [3, 2], solutionText: "(3, 2)", placeholder: "es. 3,2", hints: ["B·(2,0) = (2,2); poi + O' = (1,0)."] },
+  { level: "Difficile", prompt: (<span>In 3D con B = diag(2,1,1), O'=(1,0,0), P=(5,3,4): quanto vale P'? Scrivi le tre componenti.</span>), expected: [2, 3, 4], solutionText: "(2, 3, 4)", placeholder: "es. 2,3,4", hints: ["P − O' = (4,3,4).", "Dividi la prima componente per 2."] },
+  { level: "Difficile", prompt: (<span>Quante colonne ha la matrice B di un cambiamento di base in 3 dimensioni?</span>), expected: [3], solutionText: "3", placeholder: "es. 3", hints: ["Una per ogni nuovo versore."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 7</span>
-      <h1>Cambiamenti di base e di riferimento</h1>
-
+    <>
       <div className="card">
         <h2>Il problema</h2>
         <p>
@@ -145,6 +154,19 @@ export function CambioBase() {
           <Link to="/calcolatore">Calcolatore</Link> (scheda "Cambio di base").
         </p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function CambioBase() {
+  return (
+    <SectionShell
+      pill="Teoria · 7"
+      title="Cambiamenti di base e di riferimento"
+      teoria={<Teoria />}
+      simulazione={<CambioBaseSim />}
+      esercizi={esercizi}
+      quizTopic="Cambiamenti di base"
+    />
   );
 }

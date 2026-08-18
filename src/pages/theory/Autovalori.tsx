@@ -1,10 +1,20 @@
 import { Formula } from "../../components/Formula";
+import { SectionShell } from "../../components/section/SectionShell";
+import { EigenSim } from "../../components/sim/EigenSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function Autovalori() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>Autovalori della matrice diagonale <Formula tex="\begin{pmatrix}3&0\\0&5\end{pmatrix}" />? Scrivili separati da virgola.</span>), expected: [3, 5], solutionText: "3, 5", placeholder: "es. 3,5", hints: ["Per una diagonale sono gli elementi sulla diagonale."] },
+  { level: "Facile", prompt: (<span>Per <Formula tex="A=\begin{pmatrix}2&1\\1&2\end{pmatrix}" />, la traccia (somma degli autovalori) vale?</span>), expected: [4], solutionText: "4", placeholder: "es. 4", hints: ["Traccia = somma diagonale = 2 + 2."] },
+  { level: "Medio", prompt: (<span>Per <Formula tex="A=\begin{pmatrix}2&1\\1&2\end{pmatrix}" />, gli autovalori sono? (tr=4, det=3)</span>), expected: [1, 3], solutionText: "1 e 3", placeholder: "es. 1,3", hints: ["λ² − 4λ + 3 = 0.", "(λ−1)(λ−3)=0."] },
+  { level: "Medio", prompt: (<span>Il prodotto degli autovalori di A è uguale a quale quantità? Rispondi con il valore per la matrice sopra (det = 3).</span>), expected: [3], solutionText: "3 (il determinante)", placeholder: "es. 3", hints: ["Prodotto autovalori = determinante."] },
+  { level: "Difficile", prompt: (<span>Autovettore di <Formula tex="\begin{pmatrix}2&1\\1&2\end{pmatrix}" /> associato a λ=3? (una direzione, es. 1,1)</span>), expected: [1, 1], solutionText: "(1, 1)", placeholder: "es. 1,1", hints: ["Risolvi (A−3I)v=0.", "Le righe danno v1 = v2."] },
+  { level: "Difficile", prompt: (<span>Per una matrice triangolare <Formula tex="\begin{pmatrix}5&7\\0&2\end{pmatrix}" />, il maggiore dei due autovalori è?</span>), expected: [5], solutionText: "5", placeholder: "es. 5", hints: ["Autovalori sulla diagonale: 5 e 2."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 6</span>
-      <h1>Autovalori e autovettori</h1>
+    <>
 
       <div className="card">
         <h2>Definizione</h2>
@@ -81,6 +91,19 @@ export function Autovalori() {
           <b>Calcolatore</b>.
         </p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function Autovalori() {
+  return (
+    <SectionShell
+      pill="Teoria · 6"
+      title="Autovalori e autovettori"
+      teoria={<Teoria />}
+      simulazione={<EigenSim />}
+      esercizi={esercizi}
+      quizTopic="Autovalori e autovettori"
+    />
   );
 }

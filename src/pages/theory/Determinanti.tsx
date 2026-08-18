@@ -1,10 +1,20 @@
 import { Formula } from "../../components/Formula";
+import { SectionShell } from "../../components/section/SectionShell";
+import { DeterminantSim } from "../../components/sim/DeterminantSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function Determinanti() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>Calcola <Formula tex="\det\begin{pmatrix}2&1\\3&4\end{pmatrix}" />.</span>), expected: [5], solutionText: "5", placeholder: "es. 5", hints: ["ad − bc.", "2·4 − 1·3."] },
+  { level: "Facile", prompt: (<span>Calcola <Formula tex="\det\begin{pmatrix}1&2\\3&4\end{pmatrix}" />.</span>), expected: [-2], solutionText: "-2", placeholder: "es. -2", hints: ["1·4 − 2·3."] },
+  { level: "Medio", prompt: (<span>Determinante della matrice diagonale diag(2, 3, 4)?</span>), expected: [24], solutionText: "24", placeholder: "es. 24", hints: ["Prodotto degli elementi diagonali.", "2·3·4."] },
+  { level: "Medio", prompt: (<span>Una matrice ha due righe uguali: quanto vale il determinante?</span>), expected: [0], solutionText: "0", placeholder: "es. 0", hints: ["Righe dipendenti ⇒ det = 0."] },
+  { level: "Difficile", prompt: (<span>Calcola <Formula tex="\det\begin{pmatrix}2&0&1\\1&3&4\\-1&2&0\end{pmatrix}" /> (sviluppo di Laplace).</span>), expected: [-11], solutionText: "-11", placeholder: "es. -11", hints: ["Sviluppa lungo una riga.", "Il risultato è −11."] },
+  { level: "Difficile", prompt: (<span>Se <Formula tex="\det A = 3" /> e <Formula tex="\det B = 2" />, quanto vale <Formula tex="\det(AB)" />?</span>), expected: [6], solutionText: "6", placeholder: "es. 6", hints: ["det(AB) = det A · det B."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 5</span>
-      <h1>Determinanti</h1>
+    <>
 
       <div className="card">
         <h2>Significato geometrico</h2>
@@ -58,6 +68,19 @@ export function Determinanti() {
         <Formula block tex="= -1(0-2) + 3(0+1) - 4(4-0) = 2 + 3 - 16 = -11" />
         <p>Puoi verificare qualsiasi determinante, con passaggi completi, nella sezione <b>Calcolatore</b>.</p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function Determinanti() {
+  return (
+    <SectionShell
+      pill="Teoria · 5"
+      title="Determinanti"
+      teoria={<Teoria />}
+      simulazione={<DeterminantSim />}
+      esercizi={esercizi}
+      quizTopic="Determinanti"
+    />
   );
 }

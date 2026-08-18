@@ -1,10 +1,20 @@
 import { Formula } from "../../components/Formula";
+import { SectionShell } from "../../components/section/SectionShell";
+import { TransformSim } from "../../components/sim/TransformSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function Matrici() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>Se A è 2×3 e B è 3×4, quante colonne ha il prodotto AB?</span>), expected: [4], solutionText: "4 (AB è 2×4)", placeholder: "es. 4", hints: ["Il prodotto ha le righe di A e le colonne di B."] },
+  { level: "Facile", prompt: (<span>Calcola l'elemento in posizione (1,1) di <Formula tex="\begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}3&1\\2&0\end{pmatrix}" />.</span>), expected: [7], solutionText: "7", placeholder: "es. 7", hints: ["Riga 1 di A per colonna 1 di B.", "1·3 + 2·2."] },
+  { level: "Medio", prompt: (<span>Il determinante di <Formula tex="\begin{pmatrix}2&1\\3&4\end{pmatrix}" /> (serve per l'inversa). Quanto vale?</span>), expected: [5], solutionText: "5", placeholder: "es. 5", hints: ["ad − bc.", "2·4 − 1·3."] },
+  { level: "Medio", prompt: (<span>L'elemento (2,1) della trasposta di <Formula tex="\begin{pmatrix}1&2\\3&4\end{pmatrix}" />?</span>), expected: [2], solutionText: "2", placeholder: "es. 2", hints: ["La trasposta scambia righe e colonne: (Aᵀ)₂₁ = A₁₂."] },
+  { level: "Difficile", prompt: (<span>Calcola il primo elemento (1,1) del prodotto riga-colonna <Formula tex="(1, 0, 2)\cdot(3, 5, 1)^T" /> (prodotto scalare).</span>), expected: [5], solutionText: "5", placeholder: "es. 5", hints: ["1·3 + 0·5 + 2·1."] },
+  { level: "Difficile", prompt: (<span>Per una matrice diagonale diag(2, 5), l'inversa è diag(1/2, ?). Qual è il secondo valore?</span>), expected: [1 / 5], solutionText: "1/5", placeholder: "es. 1/5", hints: ["L'inversa di una diagonale ha i reciproci sulla diagonale."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 3</span>
-      <h1>Matrici</h1>
+    <>
 
       <div className="card">
         <h2>Definizioni</h2>
@@ -72,6 +82,19 @@ export function Matrici() {
         <Formula block tex="BA = \begin{pmatrix}3\cdot1+1\cdot0 & 3\cdot2+1\cdot1\\2\cdot1+0\cdot0 & 2\cdot2+0\cdot1\end{pmatrix}=\begin{pmatrix}3&7\\2&4\end{pmatrix}" />
         <p>Come si vede, <Formula tex="AB \neq BA" />: il prodotto tra matrici non è commutativo.</p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function Matrici() {
+  return (
+    <SectionShell
+      pill="Teoria · 3"
+      title="Matrici"
+      teoria={<Teoria />}
+      simulazione={<TransformSim />}
+      esercizi={esercizi}
+      quizTopic="Matrici"
+    />
   );
 }

@@ -1,12 +1,22 @@
 import { Formula } from "../../components/Formula";
 import { LineProjectionPlot } from "../../components/LineProjectionPlot";
 import { PlaneProjectionPlot } from "../../components/PlaneProjectionPlot";
+import { SectionShell } from "../../components/section/SectionShell";
+import { ProiezioniSim } from "../../components/sim/ProiezioniSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function ProiezioniDistanze() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>Distanza di P=(2,3) dalla retta 3x+4y−5=0. (|3·2+4·3−5|/5)</span>), expected: [2.6], solutionText: "13/5 = 2,6", placeholder: "es. 2.6 o 13/5", hints: ["Numeratore = |6+12−5| = 13.", "Denominatore = √(9+16) = 5."] },
+  { level: "Facile", prompt: (<span>Se un punto appartiene alla retta, la sua distanza dalla retta è?</span>), expected: [0], solutionText: "0", placeholder: "es. 0", hints: ["L'equazione valutata nel punto è nulla."] },
+  { level: "Medio", prompt: (<span>Distanza di P=(4,1,3) dal piano 2x−y+2z−6=0. (|8−1+6−6|/3)</span>), expected: [2.3333333333], solutionText: "7/3 ≈ 2,333", placeholder: "es. 7/3", hints: ["Numeratore = |7| = 7.", "Denominatore = √(4+1+4) = 3."] },
+  { level: "Medio", prompt: (<span>Metodo vettoriale: con A=(3,−1), v=(4,−3), P₀=(2,3): quanto vale <Formula tex="\vec{AP_0}\times v" /> (scalare)?</span>), expected: [-13], solutionText: "-13", placeholder: "es. -13", hints: ["AP₀ = (−1, 4).", "(−1)(−3) − (4)(4)."] },
+  { level: "Difficile", prompt: (<span>Proiezione di P=(2,3) sulla retta 3x+4y−5=0: scrivi le due componenti di H (frazioni con /).</span>), expected: [11 / 25, 23 / 25], solutionText: "(11/25, 23/25)", placeholder: "es. 11/25,23/25", hints: ["H = P − (13/25)(3,4).", "(2−39/25, 3−52/25)."] },
+  { level: "Difficile", prompt: (<span>Rispetto alla retta ax+by+c=0, il vettore (a,b) è parallelo o normale? Rispondi 1 se normale, 0 se parallelo.</span>), expected: [1], solutionText: "1 — è normale (perpendicolare)", placeholder: "0 oppure 1", hints: ["Il gradiente (a,b) è ortogonale alla retta."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 8</span>
-      <h1>Proiezioni e distanze</h1>
+    <>
       <p style={{ color: "var(--text-muted)" }}>
         Come proiettare un punto su una retta (in <Formula tex="\mathbb{R}^2" />) o su un piano (in{" "}
         <Formula tex="\mathbb{R}^3" />) e calcolarne la distanza, con due metodi equivalenti: quello
@@ -105,6 +115,19 @@ export function ProiezioniDistanze() {
           <li>Il metodo vettoriale è equivalente: proietta <Formula tex="\vec{AP}" /> sulla direzione (per H) o sulla normale (per la distanza).</li>
         </ul>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function ProiezioniDistanze() {
+  return (
+    <SectionShell
+      pill="Teoria · 8"
+      title="Proiezioni e distanze"
+      teoria={<Teoria />}
+      simulazione={<ProiezioniSim />}
+      esercizi={esercizi}
+      quizTopic="Proiezioni e distanze"
+    />
   );
 }

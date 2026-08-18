@@ -1,11 +1,20 @@
 import { Formula } from "../../components/Formula";
+import { SectionShell } from "../../components/section/SectionShell";
+import { LinearCombinationSim } from "../../components/sim/LinearCombinationSim";
+import type { Exercise } from "../../components/section/ExerciseSet";
 
-export function SpaziVettoriali() {
+const esercizi: Exercise[] = [
+  { level: "Facile", prompt: (<span>Qual è la dimensione di <Formula tex="\mathbb{R}^5" />?</span>), expected: [5], solutionText: "5", placeholder: "es. 5", hints: ["La base canonica ha un vettore per ogni coordinata."] },
+  { level: "Facile", prompt: (<span>Quanti vettori ha una base dello spazio dei polinomi di grado ≤ 3?</span>), expected: [4], solutionText: "4", placeholder: "es. 4", hints: ["Una base è {1, x, x², x³}."] },
+  { level: "Medio", prompt: (<span>Qual è la dimensione dello span di un solo vettore non nullo in <Formula tex="\mathbb{R}^3" />?</span>), expected: [1], solutionText: "1 (una retta)", placeholder: "es. 1", hints: ["Tutti i multipli di un vettore formano una retta."] },
+  { level: "Medio", prompt: (<span>I vettori (1,2,1), (0,1,1), (2,3,1) sono indipendenti o dipendenti? Rispondi <b>1</b> se indipendenti, <b>0</b> se dipendenti.</span>), expected: [0], solutionText: "0 — sono dipendenti (il determinante 3×3 è nullo)", placeholder: "0 oppure 1", hints: ["Calcola il determinante 3×3 delle componenti.", "Il determinante è 0, quindi sono dipendenti."] },
+  { level: "Difficile", prompt: (<span>Numero massimo di vettori linearmente indipendenti in <Formula tex="\mathbb{R}^4" />?</span>), expected: [4], solutionText: "4", placeholder: "es. 4", hints: ["Coincide con la dimensione dello spazio."] },
+  { level: "Difficile", prompt: (<span>Se in <Formula tex="\mathbb{R}^3" /> hai 4 vettori, quanti al massimo possono essere indipendenti?</span>), expected: [3], solutionText: "3", placeholder: "es. 3", hints: ["Non si può superare la dimensione dello spazio."] },
+];
+
+function Teoria() {
   return (
-    <div>
-      <span className="pill">Teoria · 2</span>
-      <h1>Spazi vettoriali</h1>
-
+    <>
       <div className="card">
         <h2>Definizione assiomatica</h2>
         <p>
@@ -86,6 +95,19 @@ export function SpaziVettoriali() {
           sezione <b>Calcolatore</b>.
         </p>
       </div>
-    </div>
+    </>
+  );
+}
+
+export function SpaziVettoriali() {
+  return (
+    <SectionShell
+      pill="Teoria · 2"
+      title="Spazi vettoriali"
+      teoria={<Teoria />}
+      simulazione={<LinearCombinationSim />}
+      esercizi={esercizi}
+      quizTopic="Spazi vettoriali"
+    />
   );
 }
