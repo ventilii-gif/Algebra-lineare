@@ -54,15 +54,3 @@ jobs:
       - name: Deploy su GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      # Con la pubblicazione via workflow il file CNAME non viene letto:
-      # il dominio va impostato dalle API. Non blocca il deploy se fallisce.
-      - name: Imposta il dominio personalizzato
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-          DOMINIO: algebra-lineare.ventilii.ai
-        run: |
-          echo "Imposto $DOMINIO su ${{ github.repository }}"
-          gh api -X PUT "repos/${{ github.repository }}/pages" -f "cname=$DOMINIO"
-          gh api "repos/${{ github.repository }}/pages" --jq '{cname, html_url, https_enforced}'
