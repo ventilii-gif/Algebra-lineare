@@ -1,17 +1,7 @@
-import { useState } from "react";
 import { Formula } from "../../components/Formula";
-import { ExerciseSet, type Exercise } from "../../components/section/ExerciseSet";
-import { SectionQuiz } from "../../components/section/SectionQuiz";
+import { SectionShell } from "../../components/section/SectionShell";
+import { type Exercise } from "../../components/section/ExerciseSet";
 import { VettoriSimulazione } from "./vettori/VettoriSimulazione";
-
-type Sub = "teoria" | "simulazione" | "esercizi" | "quiz";
-
-const subs: { id: Sub; label: string }[] = [
-  { id: "teoria", label: "Teoria" },
-  { id: "simulazione", label: "Simulazione" },
-  { id: "esercizi", label: "Esercizi" },
-  { id: "quiz", label: "Quiz" },
-];
 
 const esercizi: Exercise[] = [
   {
@@ -65,26 +55,15 @@ const esercizi: Exercise[] = [
 ];
 
 export function Vettori() {
-  const [sub, setSub] = useState<Sub>("teoria");
-
   return (
-    <div>
-      <span className="pill">Teoria · 1</span>
-      <h1>Vettori</h1>
-
-      <div className="tab-row">
-        {subs.map((s) => (
-          <button key={s.id} className={`tab-btn ${sub === s.id ? "active" : ""}`} onClick={() => setSub(s.id)}>
-            {s.label}
-          </button>
-        ))}
-      </div>
-
-      {sub === "teoria" && <Teoria />}
-      {sub === "simulazione" && <VettoriSimulazione />}
-      {sub === "esercizi" && <ExerciseSet exercises={esercizi} />}
-      {sub === "quiz" && <SectionQuiz topic="Vettori" />}
-    </div>
+    <SectionShell
+      pill="Teoria · 1"
+      title="Vettori"
+      teoria={<Teoria />}
+      simulazione={<VettoriSimulazione />}
+      esercizi={esercizi}
+      quizTopic="Vettori"
+    />
   );
 }
 

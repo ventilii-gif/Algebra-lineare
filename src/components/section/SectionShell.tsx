@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { ExerciseSet, type Exercise } from "./ExerciseSet";
 import { SectionQuiz } from "./SectionQuiz";
+import { generatorsByTopic } from "../../data/generators";
 
 type Sub = "teoria" | "simulazione" | "esercizi" | "quiz";
 
@@ -35,7 +36,9 @@ export function SectionShell({ pill, title, teoria, simulazione, esercizi, quizT
       </div>
       {sub === "teoria" && <div>{teoria}</div>}
       {sub === "simulazione" && <div>{simulazione}</div>}
-      {sub === "esercizi" && <ExerciseSet exercises={esercizi} />}
+      {sub === "esercizi" && (
+        <ExerciseSet exercises={esercizi} generators={generatorsByTopic[quizTopic] ?? []} topic={quizTopic} />
+      )}
       {sub === "quiz" && <SectionQuiz topic={quizTopic} />}
     </div>
   );
