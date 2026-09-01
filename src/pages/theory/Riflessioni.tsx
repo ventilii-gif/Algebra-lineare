@@ -39,6 +39,8 @@ function Teoria() {
           In forma matriciale, se la retta forma un angolo <Formula tex="\theta" /> con l'asse x:
         </p>
         <Formula block tex="R_\theta = \begin{pmatrix} \cos 2\theta & \sin 2\theta \\ \sin 2\theta & -\cos 2\theta \end{pmatrix}" />
+        <p>In coordinate, le formule esplicite di <Formula tex="x'" /> e <Formula tex="y'" /> in funzione di <Formula tex="x" /> e <Formula tex="y" /> sono:</p>
+        <Formula block tex="\begin{cases} x' = x\,\cos 2\theta + y\,\sin 2\theta \\[4pt] y' = x\,\sin 2\theta - y\,\cos 2\theta \end{cases}" />
         <p>Casi notevoli:</p>
         <ul>
           <li>Asse x (θ = 0): <Formula tex="\begin{pmatrix}1&0\\0&-1\end{pmatrix}" />, cioè <Formula tex="(x,y)\mapsto(x,-y)" />.</li>
@@ -74,6 +76,13 @@ function Teoria() {
           delle distanze/proiezioni):
         </p>
         <Formula block tex="P' = P - 2\,\frac{a x_0 + b y_0 + c}{a^2 + b^2}\,(a, b)" />
+        <p>
+          In coordinate, le formule esplicite di <Formula tex="x'" /> e <Formula tex="y'" /> in
+          funzione di <Formula tex="x" /> e <Formula tex="y" /> sono:
+        </p>
+        <Formula block tex="\begin{cases} x' = x - \dfrac{2a\,(ax + by + c)}{a^2 + b^2} \\[6pt] y' = y - \dfrac{2b\,(ax + by + c)}{a^2 + b^2} \end{cases}" />
+        <p>ovvero, sviluppando i conti:</p>
+        <Formula block tex="\begin{cases} x' = \dfrac{(b^2 - a^2)\,x - 2ab\,y - 2ac}{a^2 + b^2} \\[6pt] y' = \dfrac{-2ab\,x + (a^2 - b^2)\,y - 2bc}{a^2 + b^2} \end{cases}" />
         <p>
           Rispetto alla proiezione, il fattore è <b>2</b> invece di 1: la proiezione si ferma sulla
           retta (H), la riflessione prosegue fino a P' dall'altra parte.
