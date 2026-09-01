@@ -46,6 +46,12 @@ jobs:
 
   deploy:
     needs: build
+    # Solo il branch di default è autorizzato a pubblicare sull'ambiente
+    # github-pages: da ogni altro branch il job viene rifiutato dalle regole
+    # dell'ambiente e la run risulta fallita. Con questa condizione gli altri
+    # branch si limitano a compilare, e se un domani il branch di default
+    # cambia (per esempio diventa main) la pubblicazione lo segue da sola.
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     environment:
       name: github-pages
