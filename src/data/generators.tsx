@@ -61,6 +61,27 @@ export const generatorsByTopic: Record<string, Generator[]> = {
         };
       },
     },
+    {
+      level: "Medio",
+      title: "Angolo tra vettori",
+      make: () => {
+        const kase = pick(["orto", "same", "opp"] as const);
+        const a = nz(-4, 4), b = nz(-4, 4);
+        let v: number[], ang: number, why: string;
+        if (kase === "orto") { v = [-b, a]; ang = 90; why = "prodotto scalare nullo"; }
+        else if (kase === "same") { const k = rint(1, 3); v = [k * a, k * b]; ang = 0; why = "stesso verso (multiplo positivo)"; }
+        else { const k = rint(1, 3); v = [-k * a, -k * b]; ang = 180; why = "versi opposti (multiplo negativo)"; }
+        const dot = a * v[0] + b * v[1];
+        return {
+          prompt: (<span>Qual è l'angolo (in gradi) tra <Formula tex={`(${a}, ${b})`} /> e <Formula tex={`(${v[0]}, ${v[1]})`} />?</span>),
+          expected: [ang],
+          solutionText: `${ang}°`,
+          placeholder: "es. 90",
+          hints: ["Guarda il prodotto scalare: 0 → 90°; multiplo positivo → 0°; multiplo negativo → 180°."],
+          steps: [`prodotto scalare = ${a}·${v[0]} + ${b}·${v[1]} = ${dot}`, `→ ${ang}° (${why})`],
+        };
+      },
+    },
   ],
 
   "Spazi vettoriali": [
@@ -188,6 +209,22 @@ export const generatorsByTopic: Record<string, Generator[]> = {
         };
       },
     },
+    {
+      level: "Difficile",
+      title: "Sistema parametrico (quando manca l'unicità)",
+      make: () => {
+        const b = nz(-4, 4), c = nz(-4, 4);
+        const k = b * c;
+        return {
+          prompt: (<span>Per quale valore di <Formula tex="k" /> il sistema con matrice dei coefficienti <Formula tex={`\\begin{pmatrix}1&${b}\\\\${c}&k\\end{pmatrix}`} /> NON ha soluzione unica (det = 0)?</span>),
+          expected: [k],
+          solutionText: `k = ${k}`,
+          placeholder: "es. 6",
+          hints: ["Imponi il determinante uguale a 0.", `det = 1·k − (${b})·(${c})`],
+          steps: [`det = 1·k − (${b})·(${c}) = k − ${k}`, `k − ${k} = 0 → k = ${k}`],
+        };
+      },
+    },
   ],
 
   Determinanti: [
@@ -239,6 +276,26 @@ export const generatorsByTopic: Record<string, Generator[]> = {
           placeholder: "es. 1,3",
           hints: ["Per una matrice triangolare gli autovalori sono sulla diagonale."],
           steps: [`diagonale: ${l1} e ${l2}`],
+        };
+      },
+    },
+    {
+      level: "Difficile",
+      title: "È diagonalizzabile?",
+      make: () => {
+        const same = Math.random() < 0.5;
+        const l1 = rint(-3, 4);
+        let l2 = same ? l1 : rint(-3, 4);
+        if (!same && l1 === l2) l2 = l1 + 1;
+        const off = same ? nz(-3, 3) : rint(-3, 3);
+        const diag = l1 !== l2 || off === 0;
+        return {
+          prompt: (<span>La matrice <Formula tex={`\\begin{pmatrix}${l1}&${off}\\\\0&${l2}\\end{pmatrix}`} /> è diagonalizzabile? Rispondi 1 (sì) o 0 (no).</span>),
+          expected: [diag ? 1 : 0],
+          solutionText: diag ? "1 (sì)" : "0 (no)",
+          placeholder: "0 oppure 1",
+          hints: ["Gli autovalori sono sulla diagonale (matrice triangolare).", "Due autovalori distinti → sì; autovalore doppio con matrice non diagonale → no."],
+          steps: [`autovalori: ${l1} e ${l2}`, l1 !== l2 ? "distinti → diagonalizzabile (1)" : off === 0 ? "uguali ma matrice già diagonale → sì (1)" : "autovalore doppio con blocco non diagonale → NON diagonalizzabile (0)"],
         };
       },
     },
@@ -321,6 +378,25 @@ export const generatorsByTopic: Record<string, Generator[]> = {
           placeholder: "es. 2,-1",
           hints: ["P' = P − 2·(x+y+c)/2·(1,1).", `(x+y+c) = ${Px + Py + c}`],
           steps: [`fattore = (${Px} + ${Py} ${c >= 0 ? "+ " + c : "− " + -c}) / 2 = ${s}`, `P' = (${Px}, ${Py}) − 2·${s}·(1,1) = (${rx}, ${ry})`],
+        };
+      },
+    },
+    {
+      level: "Difficile",
+      title: "Due riflessioni = rotazione",
+      make: () => {
+        const a = rint(0, 5) * 30;
+        let b = rint(0, 5) * 30;
+        while (b === a) b = rint(0, 5) * 30;
+        const lo = Math.min(a, b), hi = Math.max(a, b);
+        const rot = 2 * (hi - lo);
+        return {
+          prompt: (<span>La composizione di due riflessioni rispetto a rette per l'origine inclinate di <Formula tex={`${lo}^\\circ`} /> e <Formula tex={`${hi}^\\circ`} /> è una rotazione. Di quanti gradi?</span>),
+          expected: [rot],
+          solutionText: `${rot}°`,
+          placeholder: "es. 60",
+          hints: ["Due riflessioni in rette che formano un angolo θ danno una rotazione di 2θ.", `θ = ${hi} − ${lo} = ${hi - lo}°`],
+          steps: [`angolo tra le rette = ${hi} − ${lo} = ${hi - lo}°`, `rotazione = 2 · ${hi - lo} = ${rot}°`],
         };
       },
     },
