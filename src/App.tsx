@@ -10,6 +10,7 @@ import { Determinanti } from "./pages/theory/Determinanti";
 import { Autovalori } from "./pages/theory/Autovalori";
 import { CambioBase } from "./pages/theory/CambioBase";
 import { ProiezioniDistanze } from "./pages/theory/ProiezioniDistanze";
+import { Riflessioni } from "./pages/theory/Riflessioni";
 import { Calcolatore } from "./pages/Calcolatore";
 import { Visualizzazioni } from "./pages/Visualizzazioni";
 import { Quiz } from "./pages/Quiz";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/teoria/autovalori" element={<Autovalori />} />
           <Route path="/teoria/cambio-base" element={<CambioBase />} />
           <Route path="/teoria/proiezioni-distanze" element={<ProiezioniDistanze />} />
+          <Route path="/teoria/riflessioni" element={<Riflessioni />} />
           <Route path="/calcolatore" element={<Calcolatore />} />
           <Route path="/visualizzazioni" element={<Visualizzazioni />} />
           <Route path="/quiz" element={<Quiz />} />

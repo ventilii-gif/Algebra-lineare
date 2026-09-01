@@ -21,6 +21,7 @@ export const navGroups: NavGroup[] = [
       { to: "/teoria/autovalori", label: "Autovalori e autovettori" },
       { to: "/teoria/cambio-base", label: "Cambiamenti di base" },
       { to: "/teoria/proiezioni-distanze", label: "Proiezioni e distanze" },
+      { to: "/teoria/riflessioni", label: "Riflessioni" },
     ],
   },
   {
@@ -78,5 +79,10 @@ export const topicSummaries = [
     to: "/teoria/proiezioni-distanze",
     title: "Proiezioni e distanze",
     desc: "Punto–retta in R² e punto–piano in R³, con metodo delle equazioni e vettoriale",
+  },
+  {
+    to: "/teoria/riflessioni",
+    title: "Riflessioni",
+    desc: "Simmetria rispetto a una direzione e a una retta: matrice, formula vettoriale, esempi",
   },
 ];
