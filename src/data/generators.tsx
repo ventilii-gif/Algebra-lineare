@@ -8,6 +8,10 @@ const nz = (a: number, b: number) => {
   return v;
 };
 const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+const det3 = (m: number[][]) =>
+  m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+  m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+  m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
 
 export const generatorsByTopic: Record<string, Generator[]> = {
   Vettori: [
@@ -79,6 +83,27 @@ export const generatorsByTopic: Record<string, Generator[]> = {
           placeholder: "es. 90",
           hints: ["Guarda il prodotto scalare: 0 → 90°; multiplo positivo → 0°; multiplo negativo → 180°."],
           steps: [`prodotto scalare = ${a}·${v[0]} + ${b}·${v[1]} = ${dot}`, `→ ${ang}° (${why})`],
+        };
+      },
+    },
+    {
+      level: "Difficile",
+      title: "Proiezione di un vettore su un altro",
+      make: () => {
+        const v = pick([[1, 1], [1, -1], [2, 1], [1, 2]]);
+        const vv = v[0] * v[0] + v[1] * v[1];
+        const t = nz(-3, 3);
+        const d = nz(-2, 2);
+        const u = [t * v[0] - d * v[1], t * v[1] + d * v[0]];
+        const proj = [t * v[0], t * v[1]];
+        const uv = t * vv;
+        return {
+          prompt: (<span>Proietta <Formula tex={`\\vec u = (${u[0]}, ${u[1]})`} /> sulla direzione di <Formula tex={`\\vec v = (${v[0]}, ${v[1]})`} />. Scrivi il vettore proiezione (x, y).</span>),
+          expected: proj,
+          solutionText: `(${proj[0]}, ${proj[1]})`,
+          placeholder: "es. 2,2",
+          hints: ["proiezione = ((u·v)/(v·v))·v.", `u·v = ${uv}, v·v = ${vv}`],
+          steps: [`u·v = ${uv}, v·v = ${vv}`, `t = (u·v)/(v·v) = ${uv}/${vv} = ${t}`, `proiezione = ${t}·(${v[0]}, ${v[1]}) = (${proj[0]}, ${proj[1]})`],
         };
       },
     },
@@ -154,6 +179,22 @@ export const generatorsByTopic: Record<string, Generator[]> = {
         };
       },
     },
+    {
+      level: "Difficile",
+      title: "Potenza di una matrice (A²)",
+      make: () => {
+        const a = rint(-3, 3), b = rint(-3, 3), c = rint(-3, 3), d = rint(-3, 3);
+        const e11 = a * a + b * c, e12 = a * b + b * d, e21 = c * a + d * c, e22 = c * b + d * d;
+        return {
+          prompt: (<span>Calcola <Formula tex={`A^2`} /> con <Formula tex={`A=\\begin{pmatrix}${a}&${b}\\\\${c}&${d}\\end{pmatrix}`} />. Scrivi i 4 elementi in ordine: a₁₁, a₁₂, a₂₁, a₂₂.</span>),
+          expected: [e11, e12, e21, e22],
+          solutionText: `(${e11}, ${e12}, ${e21}, ${e22})`,
+          placeholder: "es. 7,1,2,0",
+          hints: ["A² = A·A (prodotto righe per colonne).", `a₁₁ = ${a}·${a} + ${b}·${c}`],
+          steps: [`a₁₁ = ${a}·${a} + ${b}·${c} = ${e11}`, `a₁₂ = ${a}·${b} + ${b}·${d} = ${e12}`, `a₂₁ = ${c}·${a} + ${d}·${c} = ${e21}`, `a₂₂ = ${c}·${b} + ${d}·${d} = ${e22}`],
+        };
+      },
+    },
   ],
 
   "Trasformazioni lineari": [
@@ -222,6 +263,27 @@ export const generatorsByTopic: Record<string, Generator[]> = {
           placeholder: "es. 6",
           hints: ["Imponi il determinante uguale a 0.", `det = 1·k − (${b})·(${c})`],
           steps: [`det = 1·k − (${b})·(${c}) = k − ${k}`, `k − ${k} = 0 → k = ${k}`],
+        };
+      },
+    },
+    {
+      level: "Difficile",
+      title: "Sistema 3×3",
+      make: () => {
+        const x = rint(-3, 3), y = rint(-3, 3), z = rint(-3, 3);
+        let M: number[][];
+        do {
+          M = [0, 1, 2].map(() => [rint(-3, 3), rint(-3, 3), rint(-3, 3)]);
+        } while (det3(M) === 0);
+        const rhs = M.map((r) => r[0] * x + r[1] * y + r[2] * z);
+        const tex = `\\begin{cases}${M[0][0]}x ${M[0][1] >= 0 ? "+ " + M[0][1] : "− " + -M[0][1]}y ${M[0][2] >= 0 ? "+ " + M[0][2] : "− " + -M[0][2]}z = ${rhs[0]}\\\\ ${M[1][0]}x ${M[1][1] >= 0 ? "+ " + M[1][1] : "− " + -M[1][1]}y ${M[1][2] >= 0 ? "+ " + M[1][2] : "− " + -M[1][2]}z = ${rhs[1]}\\\\ ${M[2][0]}x ${M[2][1] >= 0 ? "+ " + M[2][1] : "− " + -M[2][1]}y ${M[2][2] >= 0 ? "+ " + M[2][2] : "− " + -M[2][2]}z = ${rhs[2]}\\end{cases}`;
+        return {
+          prompt: (<span>Risolvi <Formula tex={tex} />. Scrivi (x, y, z).</span>),
+          expected: [x, y, z],
+          solutionText: `(${x}, ${y}, ${z})`,
+          placeholder: "es. 1,-2,3",
+          hints: ["Usa l'eliminazione di Gauss (scheda Calcolatore) o la regola di Cramer.", `det della matrice = ${det3(M)} ≠ 0 → soluzione unica`],
+          steps: [`det ≠ 0 → soluzione unica`, `(x, y, z) = (${x}, ${y}, ${z})`],
         };
       },
     },
