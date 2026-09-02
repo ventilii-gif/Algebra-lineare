@@ -53,7 +53,8 @@ interface Problem {
   R32: Mat;
   R23: Mat;
   inv2Flat: number[];
-  Xflat: number[];
+  Xflat: number[]; // A = M3, B = R32  → X 3×2
+  Xflat2: number[]; // A = M2, B = R23  → X 2×3
 }
 
 function makeProblem(): Problem {
@@ -63,7 +64,8 @@ function makeProblem(): Problem {
   const R23: Mat = [0, 1].map(() => [rint(-3, 3), rint(-3, 3), rint(-3, 3)]);
   const inv2Flat = inv2(M2).flat();
   const Xflat = matmul(inv3(M3), R32).flat();
-  return { M2, M3, R32, R23, inv2Flat, Xflat };
+  const Xflat2 = matmul(inv2(M2), R23).flat();
+  return { M2, M3, R32, R23, inv2Flat, Xflat, Xflat2 };
 }
 
 function Step({ level, question, expected, hints, steps, placeholder, resetKey }: {
@@ -125,8 +127,9 @@ function Step({ level, question, expected, hints, steps, placeholder, resetKey }
 
 export function MatriciInverseProblema() {
   const [key, setKey] = useState(0);
+  const [variant, setVariant] = useState<"a3" | "a2">("a3");
   const prob = useMemo(makeProblem, [key]);
-  const { M2, M3, R32, R23, inv2Flat, Xflat } = prob;
+  const { M2, M3, R32, R23, inv2Flat, Xflat, Xflat2 } = prob;
 
   return (
     <div style={{ marginTop: "1.5rem" }}>
@@ -164,20 +167,40 @@ export function MatriciInverseProblema() {
         steps={[`det(M₂) = ${det2(M2)}`, `M₂⁻¹ = 1/${det2(M2)} · [[${M2[1][1]}, ${-M2[0][1]}], [${-M2[1][0]}, ${M2[0][0]}]]`, `= (${inv2Flat.join(", ")})`]}
       />
 
-      <Step
-        level="Difficile"
-        resetKey={key}
-        question={<span>3) Scegliamo <Formula tex="A = M_3" /> e <Formula tex="B = R_{32}" /> (compatibili: A è 3×3, B è 3×2). Risolvi <Formula tex="AX = B" />, cioè <Formula tex="X = A^{-1}B" />. Scrivi X riga per riga (6 numeri).</span>}
-        expected={Xflat}
-        placeholder="es. 1,0,-2,3,1,-1"
-        hints={["X ha le stesse dimensioni di B: 3×2.", "Prima calcola M₃⁻¹, poi moltiplica per R₃₂.", "AX = B con A invertibile ⇒ X = A⁻¹B."]}
-        steps={["A è invertibile (det = ±1), quindi X = A⁻¹B.", "Calcola M₃⁻¹ e poi il prodotto M₃⁻¹ · R₃₂ (3×2).", `X = (${Xflat.join(", ")})  (in ordine: riga 1, riga 2, riga 3)`]}
-      />
+      <div style={{ margin: "0.6rem 0" }}>
+        <p style={{ fontWeight: 600, marginBottom: "0.3rem" }}>3) Scegli la coppia A, B per risolvere <Formula tex="AX = B" />:</p>
+        <div className="btn-row">
+          <button className={`tab-btn ${variant === "a3" ? "active" : ""}`} onClick={() => setVariant("a3")}>A = M₃ (3×3), B = R₃₂</button>
+          <button className={`tab-btn ${variant === "a2" ? "active" : ""}`} onClick={() => setVariant("a2")}>A = M₂ (2×2), B = R₂₃</button>
+        </div>
+      </div>
+
+      {variant === "a3" ? (
+        <Step
+          level="Difficile"
+          resetKey={key * 2}
+          question={<span>Con <Formula tex="A = M_3" /> e <Formula tex="B = R_{32}" /> (A è 3×3, B è 3×2), risolvi <Formula tex="X = A^{-1}B" />. Scrivi X riga per riga (6 numeri) — dimensione 3×2.</span>}
+          expected={Xflat}
+          placeholder="es. 1,0,-2,3,1,-1"
+          hints={["X ha le stesse dimensioni di B: 3×2.", "Prima calcola M₃⁻¹, poi moltiplica per R₃₂.", "AX = B con A invertibile ⇒ X = A⁻¹B."]}
+          steps={["A è invertibile (det = ±1), quindi X = A⁻¹B.", "Calcola M₃⁻¹ e poi il prodotto M₃⁻¹ · R₃₂ (3×2).", `X = (${Xflat.join(", ")})  (in ordine: riga 1, riga 2, riga 3)`]}
+        />
+      ) : (
+        <Step
+          level="Difficile"
+          resetKey={key * 2 + 1}
+          question={<span>Con <Formula tex="A = M_2" /> e <Formula tex="B = R_{23}" /> (A è 2×2, B è 2×3), risolvi <Formula tex="X = A^{-1}B" />. Scrivi X riga per riga (6 numeri) — dimensione 2×3.</span>}
+          expected={Xflat2}
+          placeholder="es. 1,0,-2,3,1,-1"
+          hints={["X ha le stesse dimensioni di B: 2×3.", "Prima calcola M₂⁻¹, poi moltiplica per R₂₃.", "AX = B con A invertibile ⇒ X = A⁻¹B."]}
+          steps={["A è invertibile (det = ±1), quindi X = A⁻¹B.", "Calcola M₂⁻¹ e poi il prodotto M₂⁻¹ · R₂₃ (2×3).", `X = (${Xflat2.join(", ")})  (in ordine: riga 1, riga 2)`]}
+        />
+      )}
 
       <p style={{ color: "var(--text-muted)", fontSize: "0.88rem" }}>
-        Nota: R₃₂ e R₂₃, essendo rettangolari, non hanno inversa. Puoi però usarle come termine noto
-        B: con A = M₂ (2×2) andrebbe scelta B = R₂₃ (2 righe), ottenendo X di dimensione 2×3.
-        Verifica inverse e prodotti nel <b>Calcolatore</b>.
+        Nota: R₃₂ e R₂₃, essendo rettangolari, non hanno inversa. Servono però come termine noto B:
+        la compatibilità richiede che B abbia lo stesso numero di righe di A. Verifica inverse e
+        prodotti nel <b>Calcolatore</b>.
       </p>
     </div>
   );
