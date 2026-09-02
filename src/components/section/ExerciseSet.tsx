@@ -26,6 +26,11 @@ function parseVec(input: string, n: number): number[] | null {
   return nums as number[];
 }
 
+export function matchesAnswer(input: string, expected: number[]): boolean {
+  const got = parseVec(input, expected.length);
+  return !!got && got.every((g, i) => Math.abs(g - expected[i]) < 1e-6);
+}
+
 // Esercizio (istanza concreta), eventualmente generato a caso.
 export interface GenExercise {
   prompt: ReactNode;

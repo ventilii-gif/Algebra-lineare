@@ -19,9 +19,10 @@ interface Props {
   simulazione: ReactNode;
   esercizi: Exercise[];
   quizTopic: string;
+  eserciziExtra?: ReactNode;
 }
 
-export function SectionShell({ pill, title, teoria, simulazione, esercizi, quizTopic }: Props) {
+export function SectionShell({ pill, title, teoria, simulazione, esercizi, quizTopic, eserciziExtra }: Props) {
   const [sub, setSub] = useState<Sub>("teoria");
   return (
     <div>
@@ -37,7 +38,10 @@ export function SectionShell({ pill, title, teoria, simulazione, esercizi, quizT
       {sub === "teoria" && <div>{teoria}</div>}
       {sub === "simulazione" && <div>{simulazione}</div>}
       {sub === "esercizi" && (
-        <ExerciseSet exercises={esercizi} generators={generatorsByTopic[quizTopic] ?? []} topic={quizTopic} />
+        <>
+          <ExerciseSet exercises={esercizi} generators={generatorsByTopic[quizTopic] ?? []} topic={quizTopic} />
+          {eserciziExtra}
+        </>
       )}
       {sub === "quiz" && <SectionQuiz topic={quizTopic} />}
     </div>

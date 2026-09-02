@@ -1,6 +1,7 @@
 import { Formula } from "../../components/Formula";
 import { SectionShell } from "../../components/section/SectionShell";
 import { TransformSim } from "../../components/sim/TransformSim";
+import { MatriciInverseProblema } from "./matrici/MatriciInverseProblema";
 import type { Exercise } from "../../components/section/ExerciseSet";
 
 const esercizi: Exercise[] = [
@@ -95,6 +96,7 @@ export function Matrici() {
       simulazione={<TransformSim />}
       esercizi={esercizi}
       quizTopic="Matrici"
+      eserciziExtra={<MatriciInverseProblema />}
     />
   );
 }
